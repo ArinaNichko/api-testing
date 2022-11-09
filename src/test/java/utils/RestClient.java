@@ -8,10 +8,7 @@ import model.Product;
 import static io.restassured.RestAssured.given;
 import static utils.BuildPathHepler.propertiesReader;
 
-
 public class RestClient {
-
-
     public static String baseURL = propertiesReader("templateRequest");
 
     public static ValidatableResponse getProductRequest() {
@@ -21,7 +18,6 @@ public class RestClient {
                 .when()
                 .get(propertiesReader("pathForGetReadOne"))
                 .then();
-
     }
 
     public static ValidatableResponse postProductRequest(Product product) {
@@ -32,8 +28,6 @@ public class RestClient {
                 .when()
                 .post(propertiesReader("pathForUpdate"))
                 .then();
-
-
     }
 
     public static ValidatableResponse putProductRequest(Product product) {
@@ -44,19 +38,14 @@ public class RestClient {
                 .when()
                 .put(propertiesReader("pathForCreate"))
                 .then();
-
     }
 
-
     public static ValidatableResponse deleteProductRequest(Product product) {
-        return RestAssured.given()
+        return (ValidatableResponse) RestAssured.given()
                 .baseUri(baseURL)
                 .contentType(ContentType.JSON)
                 .body(product)
                 .when()
-                .delete(propertiesReader("pathForDelete"))
-                .then();
-
+                .delete(propertiesReader("pathForDelete"));
     }
-
 }

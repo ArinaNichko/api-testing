@@ -1,19 +1,20 @@
 package utils;
 
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-public class BuildPathHepler {
+
+public class BuildPathHepler extends Exception {
 
     public static int SUCCESS_CODE = Integer.parseInt(propertiesReader("SUCCESS_CODE"));
     public static String dataMessage = propertiesReader("dataMessage");
 
     public static String propertiesReader(String get) {
 
-
-        FileReader reader = null;
+        FileReader reader;
         try {
             reader = new FileReader("src/test/resources/config/Path.properties");
         } catch (FileNotFoundException e) {
@@ -30,6 +31,4 @@ public class BuildPathHepler {
 
         return p.getProperty(get);
     }
-
-
 }

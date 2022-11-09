@@ -7,9 +7,7 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
         PositiveTest.class
-
 })
-
 public class TestSuite {
 
 }

@@ -15,8 +15,4 @@ public class Product {
     int categoryId;
     String categoryName;
 
-    public Product(Object readJSONFile) {
-    }
-
-
 }
