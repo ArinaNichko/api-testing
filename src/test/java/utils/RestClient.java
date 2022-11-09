@@ -6,7 +6,7 @@ import io.restassured.response.ValidatableResponse;
 import model.Product;
 
 import static io.restassured.RestAssured.given;
-import static utils.BuildPathHepler.propertiesReader;
+import static utils.BuildPathHelper.propertiesReader;
 
 public class RestClient {
     public static String baseURL = propertiesReader("templateRequest");

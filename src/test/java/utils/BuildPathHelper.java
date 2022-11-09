@@ -7,7 +7,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 
-public class BuildPathHepler extends Exception {
+public class BuildPathHelper extends RuntimeException {
+
+    public BuildPathHelper(String error) {
+        super(error);
+    }
 
     public static int SUCCESS_CODE = Integer.parseInt(propertiesReader("SUCCESS_CODE"));
     public static String dataMessage = propertiesReader("dataMessage");
@@ -26,7 +30,7 @@ public class BuildPathHepler extends Exception {
         try {
             p.load(reader);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new BuildPathHelper("Reader parameter is null");
         }
 
         return p.getProperty(get);

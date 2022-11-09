@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static utils.BuildPathHepler.SUCCESS_CODE;
-import static utils.BuildPathHepler.dataMessage;
-import static utils.BuildPathHepler.propertiesReader;
+import static utils.BuildPathHelper.SUCCESS_CODE;
+import static utils.BuildPathHelper.dataMessage;
+import static utils.BuildPathHelper.propertiesReader;
 import static utils.JSONFileReader.readJSONFile;
 import static utils.JSONFileReader.JSOnFileGetMessage;
 import static utils.RestClient.getProductRequest;
