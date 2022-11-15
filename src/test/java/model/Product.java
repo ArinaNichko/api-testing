@@ -12,7 +12,7 @@ public class Product {
     String name;
     String description;
     double price;
-    int categoryId;
-    String categoryName;
+    int category_id;
+    String category_name;
 
 }

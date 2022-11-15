@@ -14,7 +14,6 @@ public class BuildPathHelper extends RuntimeException {
     }
 
     public static int SUCCESS_CODE = Integer.parseInt(propertiesReader("SUCCESS_CODE"));
-    public static String dataMessage = propertiesReader("dataMessage");
 
     public static String propertiesReader(String get) {
 

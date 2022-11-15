@@ -11,9 +11,10 @@ import static utils.BuildPathHelper.propertiesReader;
 public class RestClient {
     public static String baseURL = propertiesReader("templateRequest");
 
+
     public static ValidatableResponse getProductRequest() {
-        return RestAssured.given().
-                queryParam("id", propertiesReader("id"))
+        return   given()
+                .queryParam("id", propertiesReader("id"))
                 .baseUri(baseURL)
                 .when()
                 .get(propertiesReader("pathForGetReadOne"))
@@ -26,7 +27,7 @@ public class RestClient {
                 .contentType(ContentType.JSON)
                 .body(product)
                 .when()
-                .post(propertiesReader("pathForUpdate"))
+                .post(propertiesReader("pathForCreate"))
                 .then();
     }
 
@@ -36,16 +37,17 @@ public class RestClient {
                 .contentType(ContentType.JSON)
                 .body(product)
                 .when()
-                .put(propertiesReader("pathForCreate"))
+                .put(propertiesReader("pathForUpdate"))
                 .then();
     }
 
     public static ValidatableResponse deleteProductRequest(Product product) {
-        return (ValidatableResponse) RestAssured.given()
+        return  RestAssured.given()
                 .baseUri(baseURL)
                 .contentType(ContentType.JSON)
                 .body(product)
                 .when()
-                .delete(propertiesReader("pathForDelete"));
+                .delete(propertiesReader("pathForDelete"))
+                .then();
     }
 }
