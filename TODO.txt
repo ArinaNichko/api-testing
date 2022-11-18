@@ -1,0 +1,20 @@
+3. Move RestClient to separate folder. The same for TestRunner and TestSuite
+4. Update gitignore
+5. Create BaseTest for all basic initialization (properties, RestClient, constants, etc.)
+6. Do not throw RunTimeException
+7. Avoid explicit cast like (String)
+
+
+
+9. If you want to use JSONs templates, then you need to create a mechanism to update, inset and
+    delete records in these JSONs.
+
+
+-- DONE
+10. Refactor pom.xml
+11. Refactor TestSuite class
+8. rename Path to config.properties and refactor. Remove constants and test data.
+
+-- TODO
+1. Refactor PropertiesHelper. Implement SingleTone design pattern
+2. Refactor RestClient. Make it generic for each Http method.

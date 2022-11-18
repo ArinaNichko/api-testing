@@ -1,66 +1,66 @@
 package tests;
 
-import model.Product;
+import configurations.BaseTest;
+import io.restassured.response.Response;
+import models.Product;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import java.util.Map;
 
-
+import static enums.ResponseCodes.CREATED;
+import static enums.ResponseCodes.OK;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static utils.BuildPathHelper.SUCCESS_CODE;
-import static utils.BuildPathHelper.propertiesReader;
 import static utils.JSONFileReader.JSOnFileToString;
 import static utils.JSONFileReader.readJSONFile;
-import static utils.RestClient.getProductRequest;
-import static utils.RestClient.postProductRequest;
-import static utils.RestClient.putProductRequest;
-import static utils.RestClient.deleteProductRequest;
+import static utils.PropertiesHelper.getProperty;
+import static clients.RestClient.postProductRequest;
+import static clients.RestClient.putProductRequest;
+import static clients.RestClient.deleteProductRequest;
 
-
-public class PositiveTest {
-
+public class PositiveTest extends BaseTest {
 
     @Test
     public void getProduct() {
 
-        Product response = getProductRequest()
-                .assertThat()
-                .statusCode(SUCCESS_CODE)
-                .extract().response().as(Product.class);
-        assertThat(response, equalTo(readJSONFile(propertiesReader("pathTemplateResponses") + propertiesReader("pathGetResponse"))));
+        Response response1 = restClient.performGetRequest(getProperty("pathForGetReadOne"), Map.of("id", "2"));
+
+        assertThat(response1.statusCode(), Matchers.equalTo(OK.getValue()));
+        assertThat(response1.as(Product.class), equalTo(readJSONFile(getProperty("pathTemplateResponses") + getProperty("pathGetResponse"))));
     }
 
 
     @Test
     public void createProduct() {
-        Product product = readJSONFile(propertiesReader("pathTemplateRequests") + propertiesReader("pathPostRequest"));
+        Product product = readJSONFile(getProperty("pathTemplateRequests") + getProperty("pathPostRequest"));
 
         String responsePost = postProductRequest(product)
                 .assertThat()
-                .statusCode(SUCCESS_CODE)
+                .statusCode(CREATED.getValue())
                 .extract().response().asString();
-        assertThat(responsePost, equalTo(JSOnFileToString(propertiesReader("pathTemplateResponses") + propertiesReader("pathPostResponse"))));
+        assertThat(responsePost, equalTo(JSOnFileToString(getProperty("pathTemplateResponses") + getProperty("pathPostResponse"))));
     }
 
 
     @Test
     public void updateProduct() {
 
-        Product product = readJSONFile(propertiesReader("pathTemplateRequests") + propertiesReader("pathPutRequest"));
+        Product product = readJSONFile(getProperty("pathTemplateRequests") + getProperty("pathPutRequest"));
         String responsePut = putProductRequest(product)
                 .assertThat()
-                .statusCode(SUCCESS_CODE)
+                .statusCode(OK.getValue())
                 .extract().response().asString();
-        assertThat(responsePut, equalTo(JSOnFileToString(propertiesReader("pathTemplateResponses") + propertiesReader("pathPutResponse"))));
+        assertThat(responsePut, equalTo(JSOnFileToString(getProperty("pathTemplateResponses") + getProperty("pathPutResponse"))));
     }
 
     @Test
     public void deleteProduct() {
-        Product product = readJSONFile(propertiesReader("pathTemplateRequests") + propertiesReader("pathDeleteRequest"));
+        Product product = readJSONFile(getProperty("pathTemplateRequests") + getProperty("pathDeleteRequest"));
         String responseDelete = deleteProductRequest(product)
                 .assertThat()
-                .statusCode(SUCCESS_CODE)
+                .statusCode(OK.getValue())
                 .extract().response().asString();
-        assertThat(responseDelete, equalTo(JSOnFileToString(propertiesReader("pathTemplateResponses") + propertiesReader("pathDeleteResponse"))));
+        assertThat(responseDelete, equalTo(JSOnFileToString(getProperty("pathTemplateResponses") + getProperty("pathDeleteResponse"))));
     }
 }
