@@ -8,7 +8,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class PropertiesHelper {
+
     private static final Properties properties = new Properties();
+
+    private PropertiesHelper() {
+    }
 
     public static void initializeProperties() {
         String path = "src/test/resources/config/config.properties";

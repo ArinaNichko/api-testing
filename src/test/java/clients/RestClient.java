@@ -2,54 +2,39 @@ package clients;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 import models.Product;
 
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
+import static java.util.Collections.emptyMap;
+import static java.util.Optional.ofNullable;
 import static utils.PropertiesHelper.getProperty;
 
 public class RestClient {
   public static String baseURL = getProperty("baseUrl");
+  private static final String NULL = "null";
 
-
-  public Response performGetRequest(String url, Map<String, String> params) {
-    return given().queryParams(params).when().get(url);
+  public Response sendRequestWithParams(Method requestType, String url, Map<String, String> queryParams) {
+    return sendRequestForHttpMethods(requestType, url, null, queryParams);
   }
 
+  public Response sendRequestWithBody(Method requestType, String url, Object requestBody) {
+    return sendRequestForHttpMethods(requestType, url, requestBody, emptyMap());
+  }
+
+  private Response sendRequestForHttpMethods(Method httpMethod, String url, Object requestBody,  Map<String, String> params) {
+    RequestSpecification requestSpecification = given()
+            .contentType(ContentType.JSON)
+            .body(ofNullable(requestBody).orElse(NULL))
+            .queryParams(ofNullable(params).orElse(emptyMap()));
+    return requestSpecification.request(httpMethod, baseURL + url);
+  }
   public void initialize() {
     RestAssured.baseURI = getProperty("baseUrl");
-  }
-
-  public static ValidatableResponse postProductRequest(Product product) {
-    return given()
-        .baseUri(baseURL)
-        .contentType(ContentType.JSON)
-        .body(product)
-        .when()
-        .post(getProperty("pathForCreate"))
-        .then();
-  }
-
-  public static ValidatableResponse putProductRequest(Product product) {
-    return RestAssured.given()
-        .baseUri(baseURL)
-        .contentType(ContentType.JSON)
-        .body(product)
-        .when()
-        .put(getProperty("pathForUpdate"))
-        .then();
-  }
-
-  public static ValidatableResponse deleteProductRequest(Product product) {
-    return RestAssured.given()
-        .baseUri(baseURL)
-        .contentType(ContentType.JSON)
-        .body(product)
-        .when()
-        .delete(getProperty("pathForDelete"))
-        .then();
   }
 }
