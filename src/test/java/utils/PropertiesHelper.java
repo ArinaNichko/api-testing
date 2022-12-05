@@ -10,11 +10,25 @@ import java.util.Properties;
 public class PropertiesHelper {
 
     private static final Properties properties = new Properties();
+    private static PropertiesHelper propertiesHelper;
 
     private PropertiesHelper() {
+        this.initializeProperties();
+
     }
 
-    public static void initializeProperties() {
+    public static PropertiesHelper getInstance() {
+        if (propertiesHelper == null) {
+            propertiesHelper = new PropertiesHelper();
+        }
+        return propertiesHelper;
+    }
+
+    public String getProperty(String propertyName) {
+        return properties.getProperty(propertyName);
+    }
+
+    private void initializeProperties() {
         String path = "src/test/resources/config/config.properties";
         try {
             properties.load(new FileReader(path));
@@ -23,9 +37,5 @@ public class PropertiesHelper {
         } catch (IOException ioException) {
             throw new TestExecutionException("Problem with properties file: %s", ioException.getCause());
         }
-    }
-
-    public static String getProperty(String propertyName) {
-        return properties.getProperty(propertyName);
     }
 }

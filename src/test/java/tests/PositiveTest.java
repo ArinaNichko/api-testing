@@ -15,7 +15,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static utils.JSONFileReader.JSOnFileToString;
 import static utils.JSONFileReader.readJSONFile;
-import static utils.PropertiesHelper.getProperty;
 
 
 public class PositiveTest extends BaseTest {
@@ -23,38 +22,38 @@ public class PositiveTest extends BaseTest {
     @Test
     public void getProduct() {
 
-        Response response1 = restClient.sendRequestWithParams(Method.GET, getProperty("pathForGetReadOne"), Map.of("id", "2"));
+        Response response1 = restClient.sendRequestWithParams(Method.GET, getProductPath, Map.of("id", "2"));
 
         assertThat(response1.statusCode(), Matchers.equalTo(OK.getValue()));
-        assertThat(response1.as(Product.class), equalTo(readJSONFile(getProperty("pathTemplateResponses") + getProperty("pathGetResponse"))));
+        assertThat(response1.as(Product.class), equalTo(readJSONFile(responsesTemplatePath + getProductResponse)));
     }
 
     @Test
     public void createProduct() {
 
-        Product product = readJSONFile(getProperty("pathTemplateRequests") + getProperty("pathPostRequest"));
-        Response response1 = restClient.sendRequestWithBody(Method.POST, getProperty("pathForCreate"), product);
+        Product product = readJSONFile(requestsTemplatePath + createProductRequest);
+        Response response1 = restClient.sendRequestWithBody(Method.POST, createProductPath, product);
 
         assertThat(response1.statusCode(), Matchers.equalTo(CREATED.getValue()));
-        assertThat(response1.asString(), equalTo(JSOnFileToString(getProperty("pathTemplateResponses") + getProperty("pathPostResponse"))));
+        assertThat(response1.asString(), equalTo(JSOnFileToString(responsesTemplatePath + createProductResponse)));
     }
 
     @Test
     public void updateProduct() {
 
-        Product product = readJSONFile(getProperty("pathTemplateRequests") + getProperty("pathPutRequest"));
-        Response response1 = restClient.sendRequestWithBody(Method.PUT, getProperty("pathForUpdate"), product);
+        Product product = readJSONFile(requestsTemplatePath + updateProductRequest);
+        Response response1 = restClient.sendRequestWithBody(Method.PUT, updateProductPath, product);
 
         assertThat(response1.statusCode(), Matchers.equalTo(OK.getValue()));
-        assertThat(response1.asString(), equalTo(JSOnFileToString(getProperty("pathTemplateResponses") + getProperty("pathPutResponse"))));
+        assertThat(response1.asString(), equalTo(JSOnFileToString(responsesTemplatePath + updateProductResponse)));
     }
 
     @Test
     public void deleteProduct() {
-        Product product = readJSONFile(getProperty("pathTemplateRequests") + getProperty("pathDeleteRequest"));
-        Response response1 = restClient.sendRequestWithBody(Method.DELETE, getProperty("pathForDelete"), product);
+        Product product = readJSONFile(requestsTemplatePath + deleteProductRequest);
+        Response response1 = restClient.sendRequestWithBody(Method.DELETE, deleteProductPath, product);
 
         assertThat(response1.statusCode(), Matchers.equalTo(OK.getValue()));
-        assertThat(response1.asString(), equalTo(JSOnFileToString(getProperty("pathTemplateResponses") + getProperty("pathDeleteResponse"))));
+        assertThat(response1.asString(), equalTo(JSOnFileToString(responsesTemplatePath + deleteProductResponse)));
     }
 }
