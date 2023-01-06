@@ -60,18 +60,16 @@ public class TestEmployee extends BaseTest {
 
     @Test
     public void changeCompanyName() {
+        Employee actualEmployee = changeValue(employee, changeCompanyNamePath, changeCompanyNameValue);
+        Employee expectedEmployee = readJSONFileEmployee(updateEmployeePath);
+        expectedEmployee.getCompany().setName(changeCompanyNameValue);
 
-        Employee actual = changeValue(employee, changeCompanyNamePath, changeCompanyNameValue);
-        Employee expected = readJSONFileEmployee(updateEmployeePath);
-        expected.getCompany().setName(changeCompanyNameValue);
-
-        assertThat(actual, equalTo(expected));
+        assertThat(actualEmployee, equalTo(expectedEmployee));
     }
 
 
     @Test
     public void changeCompanyId() {
-
         Employee actual = changeValue(employee, changeCompanyIdPath, changeCompanyIdValue);
         Employee expected = readJSONFileEmployee(updateEmployeePath);
         expected.getCompany().setId(changeCompanyIdValue);
@@ -82,7 +80,6 @@ public class TestEmployee extends BaseTest {
 
     @Test
     public void setAddressEmployee() {
-
         Address[] addresses = new Address[2];
         addresses[0] = new Address("Burgas", "Bulgaria");
         addresses[1] = new Address("Zaporizhia", "Ukraine");
@@ -96,7 +93,6 @@ public class TestEmployee extends BaseTest {
 
     @Test
     public void setPhoneEmployee() {
-
         String[] phones = {"1235", "4567"};
         Employee actual = changePhoneEmployee(employee, phones);
         Employee expected = readJSONFileEmployee(updateEmployeePath);
@@ -108,7 +104,6 @@ public class TestEmployee extends BaseTest {
 
     @Test
     public void setCompanyEmployee() {
-
         Company company = new Company("QA", "6758");
         Employee actual = changeCompanyEmployee(employee, company);
         Employee expected = readJSONFileEmployee(updateEmployeePath);

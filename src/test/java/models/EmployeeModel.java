@@ -9,6 +9,4 @@ import lombok.*;
 @EqualsAndHashCode
 public class EmployeeModel {
     Employee employee;
-
-
 }

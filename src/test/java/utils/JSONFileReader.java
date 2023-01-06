@@ -1,7 +1,11 @@
 package utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.*;
+import models.Address;
+import models.Company;
+import models.Employee;
+import models.EmployeeModel;
+import models.Product;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,18 +40,14 @@ public class JSONFileReader {
     }
 
     public static Employee changeCity(String path, String change, int number) {
-
         Employee employee = readJSONFileEmployee(path);
         employee.getAddresses()[number].setCity(change);
         return employee;
-
     }
 
     public static Employee changePhoneEmployee(Employee employee, String[] newValue) {
-
         employee.setPhones(newValue);
         return employee;
-
     }
 
     public static Employee changeValue(Employee employee, String path, String newValue) {
@@ -73,16 +73,12 @@ public class JSONFileReader {
 
 
     public static Employee changeAddressEmployee(Employee employee, Address[] newValue) {
-
         employee.setAddresses(newValue);
         return employee;
-
     }
 
     public static Employee changeCompanyEmployee(Employee employee, Company newValue) {
-
         employee.setCompany(newValue);
         return employee;
-
     }
 }

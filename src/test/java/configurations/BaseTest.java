@@ -45,7 +45,6 @@ public class BaseTest {
     }
 
     private static void initializeConstants() {
-
         responsesTemplatePath = propertiesHelper.getProperty("responsesTemplatePath");
         requestsTemplatePath = propertiesHelper.getProperty("requestsTemplatePath");
         getProductPath = propertiesHelper.getProperty("getProductPath");
