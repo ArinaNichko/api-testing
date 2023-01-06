@@ -17,14 +17,21 @@
         <jackson.version>2.12.1</jackson.version>
         <lombok.version>1.18.24</lombok.version>
         <checkstyle.plugin.version>3.2.0</checkstyle.plugin.version>
+        <jsonpath.version>2.7.0</jsonpath.version>
     </properties>
 
     <dependencies>
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.maven.plugins</groupId>-->
-        <!--            <artifactId>maven-checkstyle-plugin</artifactId>-->
-        <!--            <version>${checkstyle.plugin.version}</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${jsonpath.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>io.rest-assured</groupId>

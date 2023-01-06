@@ -3,6 +3,8 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,7 +14,7 @@ public class Employee  {
     String name;
     String position;
     String[] phones;
-    Address[] addresses;
+    List<Address> addresses;
     Company company;
 
     @JsonIgnore

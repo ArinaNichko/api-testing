@@ -10,7 +10,8 @@ import models.Product;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.util.List;
 
 public class JSONFileReader {
     static ObjectMapper objectMapper = new ObjectMapper();
@@ -25,7 +26,7 @@ public class JSONFileReader {
 
     public static String JSOnFileToString(String path) {
         try {
-            return new String(Files.readAllBytes(Paths.get(path)));
+            return Files.readString(Path.of(path));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -41,7 +42,7 @@ public class JSONFileReader {
 
     public static Employee changeCity(String path, String change, int number) {
         Employee employee = readJSONFileEmployee(path);
-        employee.getAddresses()[number].setCity(change);
+        employee.getAddresses().get(number).setCity(change);
         return employee;
     }
 
@@ -63,8 +64,8 @@ public class JSONFileReader {
                 employee.getCompany().setName(newValue);
             }
             case "position" -> employee.setPosition(newValue);
-            case "city" -> employee.getAddresses()[index].setCity(newValue);
-            case "country" -> employee.getAddresses()[index].setCountry(newValue);
+            case "city" -> employee.getAddresses().get(index).setCity(newValue);
+            case "country" -> employee.getAddresses().get(index).setCountry(newValue);
             case "id" -> employee.getCompany().setId(newValue);
         }
 
@@ -72,7 +73,7 @@ public class JSONFileReader {
     }
 
 
-    public static Employee changeAddressEmployee(Employee employee, Address[] newValue) {
+    public static Employee changeAddressEmployee(Employee employee, List<Address> newValue) {
         employee.setAddresses(newValue);
         return employee;
     }
