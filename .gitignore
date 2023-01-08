@@ -1,4 +1,6 @@
-# Default ignored files
+### IntelliJ IDEA ###
 .idea
-.target
-target/test-classes
+*.iws
+*.iml
+*.ipr
+target
