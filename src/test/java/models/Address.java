@@ -1,7 +1,12 @@
 package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 
 @Data
 @AllArgsConstructor
@@ -10,11 +15,11 @@ import lombok.*;
 @EqualsAndHashCode
 public class Address {
 
-    private String city;
-    private String country;
+  private String city;
+  private String country;
 
-    @JsonIgnore
-    public boolean isEmpty() {
-        return this.equals(new Address());
-    }
+  @JsonIgnore
+  public boolean isEmpty() {
+    return this.equals(new Address());
+  }
 }
