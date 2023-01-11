@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @Builder
 @EqualsAndHashCode
 public class EmployeeModel {
-  Employee employee;
+  private Employee employee;
 }

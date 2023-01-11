@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @EqualsAndHashCode
 public class Employee {
-  String name;
-  String position;
-  String[] phones;
-  List<Address> addresses;
-  Company company;
+  private String name;
+  private String position;
+  private String[] phones;
+  private List<Address> addresses;
+  private Company company;
 
   @JsonIgnore
   public boolean isEmpty() {

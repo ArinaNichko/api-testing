@@ -24,19 +24,6 @@ public class BaseTest {
   protected static String updateProductResponse;
   protected static String deleteProductResponse;
   protected static String updateEmployeePath;
-  protected static String changeNameEmployeePath;
-  protected static String changeCountryEmployeePath;
-  protected static String changeCityEmployeePath;
-  protected static String changePositionEmployeePath;
-  protected static String changeCompanyNamePath;
-  protected static String changeCompanyIdPath;
-  protected static String changeNameEmployeeValue;
-  protected static String changeCountryEmployeeValue;
-  protected static String changeCityEmployeeValue;
-  protected static String changePositionEmployeeValue;
-  protected static String changeCompanyNameValue;
-  protected static String changeCompanyIdValue;
-
 
   @BeforeClass
   public static void beforeClassConfiguration() {
@@ -60,18 +47,6 @@ public class BaseTest {
     updateProductResponse = propertiesHelper.getProperty("updateProductResponse");
     deleteProductResponse = propertiesHelper.getProperty("deleteProductResponse");
     updateEmployeePath = propertiesHelper.getProperty("updateEmployeePath");
-    changeNameEmployeePath = propertiesHelper.getProperty("changeNameEmployeePath");
-    changeCountryEmployeePath = propertiesHelper.getProperty("changeCountryEmployeePath");
-    changeCityEmployeePath = propertiesHelper.getProperty("changeCityEmployeePath");
-    changePositionEmployeePath = propertiesHelper.getProperty("changePositionEmployeePath");
-    changeCompanyNamePath = propertiesHelper.getProperty("changeCompanyNamePath");
-    changeCompanyIdPath = propertiesHelper.getProperty("changeCompanyIdPath");
-    changeNameEmployeeValue = propertiesHelper.getProperty("changeNameEmployeeValue");
-    changeCountryEmployeeValue = propertiesHelper.getProperty("changeCountryEmployeeValue");
-    changeCityEmployeeValue = propertiesHelper.getProperty("changeCityEmployeeValue");
-    changePositionEmployeeValue = propertiesHelper.getProperty("changePositionEmployeeValue");
-    changeCompanyNameValue = propertiesHelper.getProperty("changeCompanyNameValue");
-    changeCompanyIdValue = propertiesHelper.getProperty("changeCompanyIdValue");
   }
 }
 
