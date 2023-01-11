@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,11 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
-    int id;
-    String name;
-    String description;
-    double price;
-    int category_id;
-    String category_name;
-
+  private int id;
+  private String name;
+  private String description;
+  private double price;
+  @JsonProperty("category_id")
+  private int categoryId;
+  @JsonProperty("category_name")
+  private String categoryName;
 }
