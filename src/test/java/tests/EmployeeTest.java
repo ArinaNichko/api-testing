@@ -8,32 +8,38 @@ import static utils.UpdateJsonHelper.updateFieldByPath;
 
 import configurations.BaseTest;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import models.EmployeeModel;
 import org.junit.Test;
 
 
+@Slf4j
 public class EmployeeTest extends BaseTest {
 
   @Test
   public void updateEmployeeName() {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.name", "Anna");
+    String valueToUpdate = "Anna";
+    String jsonString = updateFieldByPath(pathToJsonFile, "employee.name", valueToUpdate);
     assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
                     .getName(),
-            equalTo("Anna"));
+            equalTo(valueToUpdate));
+    log.info("Updated employee name is: {}", valueToUpdate);
   }
 
   @Test
   public void updateAddressCity() {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.addresses[0].city", "Lviv");
+    String valueToUpdate = "Lviv";
+    String jsonString = updateFieldByPath(pathToJsonFile, "employee.addresses[0].city", valueToUpdate);
     assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
                     .getAddresses()
                     .get(0)
                     .getCity(),
-            equalTo("Lviv"));
+            equalTo(valueToUpdate));
+    log.info("Updated address city is: {}", valueToUpdate);
   }
 
   @Test
@@ -44,26 +50,31 @@ public class EmployeeTest extends BaseTest {
                     .getEmployee()
                     .getPhones()[0],
             equalTo("testPhone"));
+    log.info("Updated phones are: {}", List.of("testPhone"));
   }
 
   @Test
   public void updateCompanyName() {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.company.name", "SoftServe");
+    String valueToUpdate = "SoftServe";
+    String jsonString = updateFieldByPath(pathToJsonFile, "employee.company.name", valueToUpdate);
     assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
                     .getCompany()
                     .getName(),
-            equalTo("SoftServe"));
+            equalTo(valueToUpdate));
+    log.info("Updated company name is: {}", valueToUpdate);
   }
 
   @Test
   public void updatePhone() {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.phones[0]", "4554");
+    String valueToUpdate = "4554";
+    String jsonString = updateFieldByPath(pathToJsonFile, "employee.phones[0]", valueToUpdate);
     assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
                     .getPhones()[0],
-            equalTo("4554"));
+            equalTo(valueToUpdate));
+    log.info("Updated phone is: {}", valueToUpdate);
   }
 }

@@ -2,10 +2,10 @@ package suites;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import tests.PositiveTest;
+import tests.ProductTest;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({PositiveTest.class})
+@Suite.SuiteClasses({ProductTest.class})
 public class PositiveTestSuite {
 
 }

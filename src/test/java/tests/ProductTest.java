@@ -12,12 +12,14 @@ import configurations.BaseTest;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import models.Product;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 
-public class PositiveTest extends BaseTest {
+@Slf4j
+public class ProductTest extends BaseTest {
 
   @Test
   public void getProduct() {
@@ -27,6 +29,7 @@ public class PositiveTest extends BaseTest {
     assertThat(response1.statusCode(), Matchers.equalTo(OK.getValue()));
     assertThat(response1.as(Product.class),
             equalTo(readJsonFileAsObject(responsesTemplatePath + getProductResponse, Product.class)));
+
   }
 
   @Test
@@ -34,7 +37,9 @@ public class PositiveTest extends BaseTest {
 
     Product product = readJsonFileAsObject(requestsTemplatePath + createProductRequest, Product.class);
     Response response1 = restClient.sendRequestWithBody(Method.POST, createProductPath, product);
+    String createdProductMassage = response1.jsonPath().getString("message");
 
+    log.info("Message is {}", createdProductMassage);
     assertThat(response1.statusCode(), Matchers.equalTo(CREATED.getValue()));
     assertThat(response1.asString(), equalTo(readJsonFileAsString(responsesTemplatePath + createProductResponse)));
   }
@@ -44,7 +49,9 @@ public class PositiveTest extends BaseTest {
 
     Product product = readJsonFileAsObject(requestsTemplatePath + updateProductRequest, Product.class);
     Response response1 = restClient.sendRequestWithBody(Method.PUT, updateProductPath, product);
+    String updatedProductMassage = response1.jsonPath().getString("message");
 
+    log.info("Message is {}", updatedProductMassage);
     assertThat(response1.statusCode(), Matchers.equalTo(OK.getValue()));
     assertThat(response1.asString(), equalTo(readJsonFileAsString(responsesTemplatePath + updateProductResponse)));
   }
@@ -53,7 +60,9 @@ public class PositiveTest extends BaseTest {
   public void deleteProduct() {
     Product product = readJsonFileAsObject(requestsTemplatePath + deleteProductRequest, Product.class);
     Response response1 = restClient.sendRequestWithBody(Method.DELETE, deleteProductPath, product);
+    String deletedProductMassage = response1.jsonPath().getString("message");
 
+    log.info("Message is {}", deletedProductMassage);
     assertThat(response1.statusCode(), Matchers.equalTo(OK.getValue()));
     assertThat(response1.asString(), equalTo(readJsonFileAsString(responsesTemplatePath + deleteProductResponse)));
   }
