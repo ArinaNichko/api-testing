@@ -13,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import utils.PropertiesHelper;
 
-
-
 @Slf4j
 public class RestClient {
 
