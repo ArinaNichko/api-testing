@@ -11,7 +11,8 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import models.EmployeeModel;
 import org.junit.Test;
-
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 @Slf4j
 public class EmployeeTest extends BaseTest {
@@ -53,10 +54,10 @@ public class EmployeeTest extends BaseTest {
     log.info("Updated phones are: {}", List.of("testPhone"));
   }
 
-  @Test
-  public void updateCompanyName() {
+  @ParameterizedTest
+  @ValueSource(strings = {"SoftServe", "GlobalLogic", "Luxoft"})
+  void updateCompanyName(String valueToUpdate) {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
-    String valueToUpdate = "SoftServe";
     String jsonString = updateFieldByPath(pathToJsonFile, "employee.company.name", valueToUpdate);
     assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
