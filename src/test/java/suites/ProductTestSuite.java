@@ -6,6 +6,6 @@ import tests.ProductTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ProductTest.class})
-public class PositiveTestSuite {
+public class ProductTestSuite {
 
 }

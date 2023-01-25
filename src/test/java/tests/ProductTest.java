@@ -15,15 +15,19 @@ import lombok.extern.slf4j.Slf4j;
 import models.Product;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 @Slf4j
 public class ProductTest extends BaseTest {
 
-  @Test
-  public void getProduct() {
+  @ParameterizedTest
+  @CsvFileSource(resources = "/config/test-data.csv", numLinesToSkip = 1)
+  void getProduct(String id, String getProductResponse) {
 
-    Response response = restClient.sendRequestWithParams(Method.GET, getProductPath, Map.of("id", "2"));
+    Response response = restClient.sendRequestWithParams(Method.GET, getProductPath, Map.of("id", id));
 
+    log.info("Response is: {}", response.asString());
     assertThat(response.statusCode(), Matchers.equalTo(OK.getValue()));
     assertThat(response.as(Product.class),
             equalTo(readJsonFileAsObject(responsesTemplatePath + getProductResponse, Product.class)));
