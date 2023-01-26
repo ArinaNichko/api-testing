@@ -7,5 +7,5 @@ import tests.ProductTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ProductTest.class})
 public class ProductTestSuite {
-
+// I see only 3 tests executed from ProductTest. Where is the getProduct test?
 }

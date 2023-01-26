@@ -56,15 +56,17 @@ public class EmployeeTest extends BaseTest {
 
   @ParameterizedTest
   @ValueSource(strings = {"SoftServe", "GlobalLogic", "Luxoft"})
-  void updateCompanyName(String valueToUpdate) {
+  void updateCompanyName(String companyName) {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.company.name", valueToUpdate);
-    assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
-                    .getEmployee()
-                    .getCompany()
-                    .getName(),
-            equalTo(valueToUpdate));
-    log.info("Updated company name is: {}", valueToUpdate);
+    String jsonString = updateFieldByPath(pathToJsonFile, "employee.company.name", companyName);
+
+    log.info("Updated company name is: {}", companyName);
+    assertThat(
+        readJsonStringAsObject(jsonString, EmployeeModel.class)
+            .getEmployee()
+            .getCompany()
+            .getName(),
+        equalTo(companyName));
   }
 
   @Test
