@@ -22,7 +22,7 @@ public class EmployeeTest extends BaseTest {
 
   @ParameterizedTest
   @ArgumentsSource(ObjectsArgumentsProvider.class)
-  void updateEmployeeName(String employeeName) {
+  public void updateEmployeeName(String employeeName) {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
     String jsonString = updateFieldByPath(pathToJsonFile, "employee.name", employeeName);
 

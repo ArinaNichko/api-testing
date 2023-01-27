@@ -30,14 +30,12 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 @Slf4j
 public class ProductTest extends BaseTest {
+   private final String PRODUCT_TEST_DATA = "/testData/getProductTestData.csv";
 
-   private static final String PRODUCT_TEST_DATA = propertiesHelper.getProperty("productTestDataPath");
-
- // "/testData/getProductTestData.csv"
   @ParameterizedTest
-  @CsvFileSource(resources = "/testData/getProductTestData.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = PRODUCT_TEST_DATA, numLinesToSkip = 1)
   // Test #2 is failing
-  void getProduct(String id, String productResponseFile) {
+  public void getProduct(String id, String productResponseFile) {
     Response response =
         restClient.sendRequestWithParams(Method.GET, GET_PRODUCT_PATH.getPath(), Map.of("id", id));
 
@@ -50,7 +48,6 @@ public class ProductTest extends BaseTest {
 
   @Test
   public void getProduct() {
-
     Response response = restClient.sendRequestWithParams(Method.GET, GET_PRODUCT_PATH.getPath(), Map.of("id", "2"));
 
     assertThat(response.statusCode(), Matchers.equalTo(OK.getValue()));
