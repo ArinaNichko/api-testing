@@ -1,18 +1,17 @@
 package configurations;
 
-import static utils.PropertiesHelper.getInstance;
-
 import clients.RestClient;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
 import utils.PropertiesHelper;
+
+import static utils.PropertiesHelper.getInstance;
 
 public class BaseTest {
   protected static RestClient restClient;
   protected static PropertiesHelper propertiesHelper;
 
   protected static String responsesTemplatePath;
-
   protected static String requestsTemplatePath;
 
   protected static String updateEmployeePath;
