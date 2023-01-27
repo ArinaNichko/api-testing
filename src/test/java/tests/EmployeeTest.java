@@ -9,6 +9,7 @@ import static utils.UpdateJsonHelper.updateFieldByPath;
 import configurations.BaseTest;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import models.Employee;
 import models.EmployeeModel;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,17 +21,19 @@ import utils.ObjectsArgumentsProvider;
 @Slf4j
 public class EmployeeTest extends BaseTest {
 
+  private static final int FIRST = 0;
+
   @ParameterizedTest
   @ArgumentsSource(ObjectsArgumentsProvider.class)
-  public void updateEmployeeName(String employeeName) {
+  public void updateEmployeeName(String expectedEmployeeName) {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.name", employeeName);
 
-    log.info("Updated employee name is: {}", employeeName);
-    assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
-                    .getEmployee()
-                    .getName(),
-            equalTo(employeeName));
+    String jsonString = updateFieldByPath(pathToJsonFile, "employee.name", expectedEmployeeName);
+    Employee actualEmployee = readJsonStringAsObject(jsonString, EmployeeModel.class).getEmployee();
+
+    assertThat("Actual Employee: " + actualEmployee,
+        actualEmployee.getName(),
+        equalTo(expectedEmployeeName));
   }
 
   @Test
@@ -44,7 +47,7 @@ public class EmployeeTest extends BaseTest {
             readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
                     .getAddresses()
-                    .get(0)
+                    .get(FIRST)
                     .getCity(),
             equalTo(valueToUpdate));
   }
@@ -59,7 +62,7 @@ public class EmployeeTest extends BaseTest {
     assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
                     .getAddresses()
-                    .get(0)
+                    .get(FIRST)
                     .getCity(),
             equalTo(addressCity));
   }
@@ -73,7 +76,7 @@ public class EmployeeTest extends BaseTest {
     assertThat(
             readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
-                    .getPhones()[0],
+                    .getPhones()[FIRST],
             equalTo("testPhone"));
 
   }
@@ -103,7 +106,7 @@ public class EmployeeTest extends BaseTest {
     assertThat(
             readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
-                    .getPhones()[0],
+                    .getPhones()[FIRST],
             equalTo(phone));
   }
 }
