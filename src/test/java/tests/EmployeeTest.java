@@ -12,21 +12,25 @@ import lombok.extern.slf4j.Slf4j;
 import models.EmployeeModel;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import utils.ObjectsArgumentsProvider;
 
 @Slf4j
 public class EmployeeTest extends BaseTest {
 
-  @Test
-  public void updateEmployeeName() {
+  @ParameterizedTest
+  @ArgumentsSource(ObjectsArgumentsProvider.class)
+  void updateEmployeeName(String employeeName) {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
-    String valueToUpdate = "Anna";
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.name", valueToUpdate);
+    String jsonString = updateFieldByPath(pathToJsonFile, "employee.name", employeeName);
+
+    log.info("Updated employee name is: {}", employeeName);
     assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
                     .getName(),
-            equalTo(valueToUpdate));
-    log.info("Updated employee name is: {}", valueToUpdate);
+            equalTo(employeeName));
   }
 
   @Test
@@ -34,35 +38,55 @@ public class EmployeeTest extends BaseTest {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
     String valueToUpdate = "Lviv";
     String jsonString = updateFieldByPath(pathToJsonFile, "employee.addresses[0].city", valueToUpdate);
-    assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
+
+    log.info("Updated address city is: {}", valueToUpdate);
+    assertThat(
+            readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
                     .getAddresses()
                     .get(0)
                     .getCity(),
             equalTo(valueToUpdate));
-    log.info("Updated address city is: {}", valueToUpdate);
+  }
+
+  @ParameterizedTest
+  @MethodSource("utils.DataUtils#provideObjectsData")
+  void updateAddressCity(String addressCity) {
+    String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
+    String jsonString = updateFieldByPath(pathToJsonFile, "employee.addresses[0].city", addressCity);
+
+    log.info("Updated address city is: {}", addressCity);
+    assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
+                    .getEmployee()
+                    .getAddresses()
+                    .get(0)
+                    .getCity(),
+            equalTo(addressCity));
   }
 
   @Test
   public void updatePhones() {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
     String jsonString = updateFieldByPath(pathToJsonFile, "employee.phones", List.of("testPhone"));
-    assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
+
+    log.info("Updated phones are: {}", List.of("testPhone"));
+    assertThat(
+            readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
                     .getPhones()[0],
             equalTo("testPhone"));
-    log.info("Updated phones are: {}", List.of("testPhone"));
+
   }
 
   @ParameterizedTest
   @ValueSource(strings = {"SoftServe", "GlobalLogic", "Luxoft"})
-  void updateCompanyName(String companyName) {
+   void updateCompanyName(String companyName) {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
     String jsonString = updateFieldByPath(pathToJsonFile, "employee.company.name", companyName);
 
     log.info("Updated company name is: {}", companyName);
     assertThat(
-        readJsonStringAsObject(jsonString, EmployeeModel.class)
+            readJsonStringAsObject(jsonString, EmployeeModel.class)
             .getEmployee()
             .getCompany()
             .getName(),
@@ -72,12 +96,14 @@ public class EmployeeTest extends BaseTest {
   @Test
   public void updatePhone() {
     String pathToJsonFile = readJsonFileAsString(updateEmployeePath);
-    String valueToUpdate = "4554";
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.phones[0]", valueToUpdate);
-    assertThat(readJsonStringAsObject(jsonString, EmployeeModel.class)
+    String phone = "4554";
+    String jsonString = updateFieldByPath(pathToJsonFile, "employee.phones[0]", phone);
+
+    log.info("Updated phone is: {}", phone);
+    assertThat(
+            readJsonStringAsObject(jsonString, EmployeeModel.class)
                     .getEmployee()
                     .getPhones()[0],
-            equalTo(valueToUpdate));
-    log.info("Updated phone is: {}", valueToUpdate);
+            equalTo(phone));
   }
 }

@@ -24,7 +24,7 @@ public class PropertiesHelper {
   }
 
   public String getProperty(String propertyName) {
-    return PROPERTIES.getProperty(propertyName);
+    return  PROPERTIES.getProperty(propertyName);
   }
 
   private void initializeProperties() {

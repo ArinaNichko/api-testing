@@ -12,11 +12,8 @@ public class BaseTest {
   protected static PropertiesHelper propertiesHelper;
 
   protected static String responsesTemplatePath;
-  protected static String requestsTemplatePath;
 
-  protected static String updateProductRequest;
-  protected static String createProductRequest;
-  protected static String deleteProductRequest;
+  protected static String requestsTemplatePath;
 
   protected static String updateEmployeePath;
 
@@ -36,10 +33,6 @@ public class BaseTest {
   private static void initializeConstants() {
     responsesTemplatePath = propertiesHelper.getProperty("responsesTemplatePath");
     requestsTemplatePath = propertiesHelper.getProperty("requestsTemplatePath");
-
-    updateProductRequest = propertiesHelper.getProperty("updateProductRequest");
-    createProductRequest = propertiesHelper.getProperty("createProductRequest");
-    deleteProductRequest = propertiesHelper.getProperty("deleteProductRequest");
 
     updateEmployeePath = propertiesHelper.getProperty("updateEmployeePath");
   }

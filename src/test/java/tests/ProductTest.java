@@ -1,7 +1,11 @@
 package tests;
 
+import static enums.ResourceFiles.CREATE_PRODUCT_REQUEST;
 import static enums.ResourceFiles.CREATE_PRODUCT_RESPONSE;
+import static enums.ResourceFiles.DELETE_PRODUCT_REQUEST;
 import static enums.ResourceFiles.DELETE_PRODUCT_RESPONSE;
+import static enums.ResourceFiles.GET_PRODUCT_RESPONSE;
+import static enums.ResourceFiles.UPDATE_PRODUCT_REQUEST;
 import static enums.ResourceFiles.UPDATE_PRODUCT_RESPONSE;
 import static enums.ResourcePath.CREATE_PRODUCT_PATH;
 import static enums.ResourcePath.DELETE_PRODUCT_PATH;
@@ -27,8 +31,11 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 @Slf4j
 public class ProductTest extends BaseTest {
 
+   private static final String PRODUCT_TEST_DATA = propertiesHelper.getProperty("productTestDataPath");
+
+ // "/testData/getProductTestData.csv"
   @ParameterizedTest
-  @CsvFileSource(resources = "/config/test-data.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/testData/getProductTestData.csv", numLinesToSkip = 1)
   // Test #2 is failing
   void getProduct(String id, String productResponseFile) {
     Response response =
@@ -37,15 +44,25 @@ public class ProductTest extends BaseTest {
     log.info("Response is: {}", response.asString());
     assertThat(response.statusCode(), Matchers.equalTo(OK.getValue()));
 
-    //    You are comparing objects here. Do you override equals and hashCode?
     assertThat(response.as(Product.class),
         equalTo(readJsonFileAsObject(responsesTemplatePath + productResponseFile, Product.class)));
   }
 
   @Test
+  public void getProduct() {
+
+    Response response = restClient.sendRequestWithParams(Method.GET, GET_PRODUCT_PATH.getPath(), Map.of("id", "2"));
+
+    assertThat(response.statusCode(), Matchers.equalTo(OK.getValue()));
+    assertThat(response.as(Product.class),
+            equalTo(readJsonFileAsObject(responsesTemplatePath + GET_PRODUCT_RESPONSE.getPath(), Product.class)));
+
+  }
+
+  @Test
   public void createProduct() {
     Product product =
-        readJsonFileAsObject(requestsTemplatePath + createProductRequest, Product.class);
+        readJsonFileAsObject(requestsTemplatePath + CREATE_PRODUCT_REQUEST.getPath(), Product.class);
     Response response =
         restClient.sendRequestWithBody(Method.POST, CREATE_PRODUCT_PATH.getPath(), product);
 
@@ -63,7 +80,7 @@ public class ProductTest extends BaseTest {
   @Test
   public void updateProduct() {
     Product product =
-        readJsonFileAsObject(requestsTemplatePath + updateProductRequest, Product.class);
+        readJsonFileAsObject(requestsTemplatePath + UPDATE_PRODUCT_REQUEST.getPath(), Product.class);
     Response response =
         restClient.sendRequestWithBody(Method.PUT, UPDATE_PRODUCT_PATH.getPath(), product);
 
@@ -80,7 +97,7 @@ public class ProductTest extends BaseTest {
 
   @Test
   public void deleteProduct() {
-    Product product = readJsonFileAsObject(requestsTemplatePath + deleteProductRequest, Product.class);
+    Product product = readJsonFileAsObject(requestsTemplatePath + DELETE_PRODUCT_REQUEST.getPath(), Product.class);
     Response response =
         restClient.sendRequestWithBody(Method.DELETE, DELETE_PRODUCT_PATH.getPath(), product);
 
@@ -90,7 +107,6 @@ public class ProductTest extends BaseTest {
                     .get("message")
                     .toString();
 
-    //    Asserts should be visually separated and be as much readable as possible
     log.info("Message is {}", deletedProductMassage);
     assertThat(response.statusCode(), Matchers.equalTo(OK.getValue()));
     assertThat(expectedProductMessage, equalTo(expectedProductMessage));
