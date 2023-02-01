@@ -1,11 +1,12 @@
 package configurations;
 
+import static utils.PropertiesHelper.getInstance;
+
 import clients.RestClient;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
 import utils.PropertiesHelper;
 
-import static utils.PropertiesHelper.getInstance;
 
 public class BaseTest {
   protected static RestClient restClient;
@@ -14,7 +15,6 @@ public class BaseTest {
   protected static String responsesTemplatePath;
   protected static String requestsTemplatePath;
 
-  protected static String updateEmployeePath;
 
   @BeforeClass
   public static void beforeClassConfiguration() {
@@ -32,8 +32,6 @@ public class BaseTest {
   private static void initializeConstants() {
     responsesTemplatePath = propertiesHelper.getProperty("responsesTemplatePath");
     requestsTemplatePath = propertiesHelper.getProperty("requestsTemplatePath");
-
-    updateEmployeePath = propertiesHelper.getProperty("updateEmployeePath");
   }
 }
 

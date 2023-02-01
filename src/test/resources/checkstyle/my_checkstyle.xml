@@ -270,6 +270,6 @@
     <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
   </module>
   <module name="SuppressionFilter">
-    <property name="file" value="src/test/resources/config/suppressions.xml" />
+    <property name="file" value="src/test/resources/checkstyle/suppressions.xml" />
   </module>
 </module>

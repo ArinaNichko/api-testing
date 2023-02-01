@@ -34,7 +34,9 @@ public class RestClient {
                     .contentType(ContentType.JSON)
                     .body(ofNullable(requestBody).orElse(StringUtils.EMPTY))
                     .queryParams(ofNullable(params).orElse(emptyMap()));
+    Response response = requestSpecification.request(httpMethod, baseURL + url);
     log.info("{} request was sent for URI: {}", httpMethod, baseURL + url);
-    return requestSpecification.request(httpMethod, baseURL + url);
+    log.info("Response is: {}", response.asString());
+    return response;
   }
 }
