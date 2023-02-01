@@ -1,11 +1,11 @@
 package enums;
 
 public enum ResourcePath {
-  GET_PRODUCT_PATH("/read_one.php"),
-  UPDATE_PRODUCT_PATH("/update.php"),
-  DELETE_PRODUCT_PATH("/delete.php"),
-  CREATE_PRODUCT_PATH("/create.php");
-
+  GET_PRODUCT("/read_one.php"),
+  UPDATE_PRODUCT("/update.php"),
+  DELETE_PRODUCT("/delete.php"),
+  CREATE_PRODUCT("/create.php"),
+  UPDATE_EMPLOYEE("src/test/resources/employeeJson/employee.json");
   private final String path;
 
   ResourcePath(String path) {

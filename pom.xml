@@ -141,7 +141,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <configLocation>src/test/resources/config/my_checkstyle.xml</configLocation>
+                    <configLocation>src/test/resources/checkstyle/my_checkstyle.xml</configLocation>
                     <consoleOutput>true</consoleOutput>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                 </configuration>
