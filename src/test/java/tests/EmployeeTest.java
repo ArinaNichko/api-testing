@@ -3,8 +3,8 @@ package tests;
 import static enums.ResourcePath.UPDATE_EMPLOYEE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static utils.JsonHelper.readJsonFileAsString;
-import static utils.JsonHelper.readJsonStringAsObject;
+import static utils.FileHelper.readJsonFileAsString;
+import static utils.FileHelper.readJsonStringAsObject;
 import static utils.UpdateJsonHelper.updateFieldByPath;
 
 import configurations.BaseTest;
