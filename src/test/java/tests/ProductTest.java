@@ -1,5 +1,6 @@
 package tests;
 
+import static enums.ResourceFiles.CREATE_PRODUCT_REQUEST;
 import static enums.ResourceFiles.CREATE_PRODUCT_RESPONSE;
 import static enums.ResourceFiles.DELETE_PRODUCT_REQUEST;
 import static enums.ResourceFiles.DELETE_PRODUCT_RESPONSE;
@@ -13,7 +14,7 @@ import static enums.ResponseCodes.CREATED;
 import static enums.ResponseCodes.OK;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static utils.JsonHelper.readJsonFileAsObject;
+import static utils.FileHelper.readJsonFileAsObject;
 
 import configurations.BaseTest;
 import io.restassured.http.Method;
@@ -23,48 +24,37 @@ import lombok.extern.slf4j.Slf4j;
 import models.Product;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 @Slf4j
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProductTest extends BaseTest {
   private final String PRODUCT_TEST_DATA = "/testData/productTestData.csv";
-  private final String PRODUCT_CREATION_TEST_DATA = "/testData/productCreationTestData.csv";
-
 
   @ParameterizedTest
-  @Order(2)
   @CsvFileSource(resources = PRODUCT_TEST_DATA, numLinesToSkip = 1)
   public void getProduct(String id, String productResponseFile) {
     Response response =
             restClient.sendRequestWithParams(Method.GET, GET_PRODUCT.getPath(), Map.of("id", id));
 
-
     assertThat(response.statusCode(), Matchers.equalTo(OK.getValue()));
-
     assertThat(response.as(Product.class),
             equalTo(readJsonFileAsObject(responsesTemplatePath + productResponseFile, Product.class)));
   }
 
-  @ParameterizedTest
-  @Order(1)
-  @CsvFileSource(resources = PRODUCT_CREATION_TEST_DATA, numLinesToSkip = 1)
-  public void createProduct(String createProductRequestPath) {
+  @Test
+  public void createProduct() {
     Product product =
-            readJsonFileAsObject(requestsTemplatePath + createProductRequestPath, Product.class);
+            readJsonFileAsObject(requestsTemplatePath + CREATE_PRODUCT_REQUEST.getPath(), Product.class);
     Response response =
             restClient.sendRequestWithBody(Method.POST, CREATE_PRODUCT.getPath(), product);
-    System.out.println(response.asString());
+
     String createdProductMassage = response.jsonPath().getString("message");
     String expectedProductMessage =
             readJsonFileAsObject(responsesTemplatePath + CREATE_PRODUCT_RESPONSE.getPath(), Map.class)
                     .get("message")
                     .toString();
-    System.out.println(createdProductMassage);
+
     assertThat(response.statusCode(), Matchers.equalTo(CREATED.getValue()));
     assertThat(createdProductMassage, equalTo(expectedProductMessage));
   }

@@ -1,8 +1,7 @@
 {
   "id": "12",
   "name": "V-Neck Pullover",
-  "description": "This organic hemp jersey pullover is perfect in a pinch. Wear for casual days at the office, a game of hoops after work, or running your weekend errands.",
-  "price": "65.00",
-  "category_id": "1",
-  "category_name": "Active Wear - Men"
+  "description": "Wear for casual days at the office.",
+  "price": 55.0,
+  "category_id": "12"
 }
