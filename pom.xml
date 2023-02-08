@@ -21,6 +21,8 @@
         <log4j.version>2.19.0</log4j.version>
         <slf4j.version>1.7.30</slf4j.version>
         <junit.jupiter.params.version>5.9.2</junit.jupiter.params.version>
+        <jackson.dataformat.csv>2.14.1</jackson.dataformat.csv>
+        <jackson.core> 2.14.1</jackson.core>
     </properties>
 
     <dependencies>
@@ -110,6 +112,16 @@
             <type>maven-plugin</type>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-csv</artifactId>
+            <version>${jackson.dataformat.csv}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.core}</version>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>

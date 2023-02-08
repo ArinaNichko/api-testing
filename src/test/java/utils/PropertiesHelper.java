@@ -7,13 +7,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class PropertiesHelper {
-
   private static final Properties PROPERTIES = new Properties();
   private static PropertiesHelper propertiesHelper;
 
   private PropertiesHelper() {
     this.initializeProperties();
-
   }
 
   public static PropertiesHelper getInstance() {
@@ -24,7 +22,7 @@ public class PropertiesHelper {
   }
 
   public String getProperty(String propertyName) {
-    return  PROPERTIES.getProperty(propertyName);
+    return PROPERTIES.getProperty(propertyName);
   }
 
   private void initializeProperties() {
