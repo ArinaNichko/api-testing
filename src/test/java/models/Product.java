@@ -1,6 +1,7 @@
 package models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@JsonPropertyOrder({ "id", "name", "description", "price", "category_id"})
 public class Product {
   private int id;
   private String name;
@@ -19,12 +21,4 @@ public class Product {
   private int categoryId;
   @JsonProperty("category_name")
   private String categoryName;
-
-  public Product(String[] args) {
-    this.id = Integer.parseInt(args[0]);
-    this.name = args[1];
-    this.description = args[2];
-    this.price = Double.parseDouble(args[3]);
-    this.categoryId = Integer.parseInt(args[4]);
-  }
 }

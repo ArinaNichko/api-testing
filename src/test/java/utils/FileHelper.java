@@ -1,24 +1,20 @@
 package utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import exceptions.TestExecutionException;
-import models.Product;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FileHelper {
-
   static ObjectMapper objectMapper = new ObjectMapper();
-  private static final String PATH_SEPARATOR_REGEXP = ", ";
+  static CsvMapper csvMapper = new CsvMapper();
 
   public static <T> T readJsonFileAsObject(String path, Class<T> classToCast) {
     try {
@@ -44,11 +40,17 @@ public class FileHelper {
     }
   }
 
-  public static List<Product> readFileAsProduct(String path) {
-    try (Stream<String> br = new BufferedReader(new FileReader(path)).lines()) {
-      return br.skip(1).map(line -> new Product(line.split(PATH_SEPARATOR_REGEXP))).collect(Collectors.toList());
-    } catch (FileNotFoundException e) {
+  public static <T> List<T> readCsvFileAsObject(File file, Class<T> classToCast) {
+    CsvSchema classSchema = csvMapper.schemaFor(classToCast).withHeader();
+    try {
+      MappingIterator<T> it = csvMapper
+              .readerFor(classToCast)
+              .with(classSchema)
+              .readValues(file);
+      return it.readAll();
+    } catch (IOException e) {
       throw new TestExecutionException(e.getMessage());
     }
   }
 }
+

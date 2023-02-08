@@ -1,4 +1,4 @@
-id, name, description, price, category_id
-10, Cross-Back Training Tank, The most awesome phone of 2013!, 299.0, 10
-12, V-Neck Pullover, Wear for casual days at the office., 55.0, 12
-15, V-Neck Pullover, Wear for casual days at the office., 65.0, 15
+id,name,description,price,category_id
+10,Cross-Back Training Tank,The most awesome phone of 2013!,299.0,10
+12,V-Neck Pullover,Wear for casual days at the office.,55.0, 12
+15,V-Neck Pullover,Wear for casual days at the office.,65.0,15

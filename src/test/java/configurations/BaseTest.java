@@ -2,16 +2,17 @@ package configurations;
 
 import static enums.ResourcePath.CREATE_PRODUCT;
 import static enums.ResourcePath.DELETE_PRODUCT;
-import static enums.ResourcePath.GET_ALL_PRODUCT;
-import static utils.FileHelper.readFileAsProduct;
+import static enums.ResourcePath.GET_ALL_PRODUCTS;
+import static utils.FileHelper.readCsvFileAsObject;
 import static utils.PropertiesHelper.getInstance;
 
+import clients.RestClient;
+import io.restassured.http.Method;
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import clients.RestClient;
-import io.restassured.http.Method;
-import io.restassured.response.Response;
+import java.util.stream.Collectors;
 import models.Product;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
@@ -19,9 +20,6 @@ import utils.PropertiesHelper;
 
 public class BaseTest {
   private static final String PRODUCT_CREATION_TEST_DATA = "src/test/resources/testData/productCreationTestData.csv";
-  private static final String PATH_SEPARATOR_REGEXP = ", ";
-  private static final String PATH_REPLACE_REGEXP = "\\[|\\]";
-  private static final String PATH_REPLACEMENT = "";
   protected static RestClient restClient;
   protected static PropertiesHelper propertiesHelper;
   protected static String responsesTemplatePath;
@@ -34,35 +32,38 @@ public class BaseTest {
 
     configureLog4j();
     initializeConstants();
-    createProducts();
+    createProductsIfNotExist();
   }
 
-  public static void createProducts() {
+  private static void createProductsIfNotExist() {
+    File csvFile = new File(PRODUCT_CREATION_TEST_DATA);
+    List<Product> productToCreate = readCsvFileAsObject(csvFile, Product.class);
+    List<Integer> allProductsId = restClient
+            .sendRequestWithParams(Method.GET, GET_ALL_PRODUCTS.getPath(), Collections.emptyMap())
+            .jsonPath()
+            .getList("records.id", Integer.class);
+    List<Integer> productsToDelete = productsIfExist(productToCreate, allProductsId);
 
-    List<Product> creationProductsList = readFileAsProduct(PRODUCT_CREATION_TEST_DATA);
-    Response response = restClient.sendRequestWithParams(Method.GET, GET_ALL_PRODUCT.getPath(), Collections.emptyMap());
-    String allProductsId = response.jsonPath().getString("records.id")
-            .replaceAll(PATH_REPLACE_REGEXP, PATH_REPLACEMENT);
-    List<String> allProductsIdlist = List.of(allProductsId.split(PATH_SEPARATOR_REGEXP));
-    List<String> creationProductsIdlist = creationProductsList.stream().map(Product::getId)
-            .map((Integer i) -> Integer.toString(i)).toList();
+    deleteProducts(productsToDelete);
 
-    deleteProductsList(creationProductsIdlist, allProductsIdlist);
-
-    for (Product product : creationProductsList) {
-      restClient.sendRequestWithBody(Method.POST, CREATE_PRODUCT.getPath(), product);
-    }
-
+    createProducts(productToCreate);
   }
 
-  public static void deleteProductsList(List<String> creationProductsIdList, List<String> allProductsIdList) {
-    for (String creationProductId : creationProductsIdList) {
-      for (String productId : allProductsIdList) {
-        if (creationProductId.equals(productId)) {
-          restClient.sendRequestWithBody(Method.DELETE, DELETE_PRODUCT.getPath(), Map.of("id", creationProductId));
-        }
-      }
-    }
+  private static void deleteProducts(List<Integer> productsToDelete) {
+    productsToDelete.forEach(productToCreate ->
+            restClient.sendRequestWithBody(
+                    Method.DELETE, DELETE_PRODUCT.getPath(), Map.of("id", productToCreate)));
+  }
+
+  private static List<Integer> productsIfExist(List<Product> productToCreate, List<Integer> allProductsId) {
+    return productToCreate.stream().map(Product::getId)
+            .filter(allProductsId::contains).collect(Collectors.toList());
+  }
+
+  private static void createProducts(List<Product> productsToCreate) {
+    productsToCreate.forEach(
+            productToCreate ->
+                    restClient.sendRequestWithBody(Method.POST, CREATE_PRODUCT.getPath(), productToCreate));
   }
 
   private static void configureLog4j() {
@@ -74,4 +75,3 @@ public class BaseTest {
     requestsTemplatePath = propertiesHelper.getProperty("requestsTemplatePath");
   }
 }
-

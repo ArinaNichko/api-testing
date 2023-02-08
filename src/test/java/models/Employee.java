@@ -1,6 +1,5 @@
 package models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,11 +19,4 @@ public class Employee {
   private String[] phones;
   private List<Address> addresses;
   private Company company;
-
-  @JsonIgnore
-  public boolean isEmpty() {
-    return this.equals(new Address());
-  }
-
 }
-
