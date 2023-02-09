@@ -29,17 +29,23 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 @Slf4j
 public class ProductTest extends BaseTest {
-  private final String PRODUCT_TEST_DATA = "/testData/productTestData.csv";
+  private static final String PRODUCT_TEST_DATA = "/testData/productTestData.csv";
 
   @ParameterizedTest
   @CsvFileSource(resources = PRODUCT_TEST_DATA, numLinesToSkip = 1)
   public void getProduct(String id, String productResponseFile) {
-    Response response =
-            restClient.sendRequestWithParams(Method.GET, GET_PRODUCT.getPath(), Map.of("id", id));
+    Product expectedProduct =
+        readJsonFileAsObject(responsesTemplatePath + productResponseFile, Product.class);
+    Product actualProduct =
+        restClient
+            .sendRequestWithParams(Method.GET, GET_PRODUCT.getPath(), Map.of("id", id))
+            .then()
+            .statusCode(OK.getValue())
+            .extract()
+            .response()
+            .as(Product.class);
 
-    assertThat(response.statusCode(), Matchers.equalTo(OK.getValue()));
-    assertThat(response.as(Product.class),
-            equalTo(readJsonFileAsObject(responsesTemplatePath + productResponseFile, Product.class)));
+    assertThat(actualProduct, equalTo(expectedProduct));
   }
 
   @Test
