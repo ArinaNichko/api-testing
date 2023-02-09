@@ -32,30 +32,31 @@ public class BaseTest {
 
     configureLog4j();
     initializeConstants();
-    createProductsIfNotExist();
+    createTestProducts();
   }
 
-  private static void createProductsIfNotExist() {
-    File csvFile = new File(PRODUCT_CREATION_TEST_DATA);
-    List<Product> productToCreate = readCsvFileAsObject(csvFile, Product.class);
-    List<Integer> allProductsId = restClient
+  private static void createTestProducts() {
+    List<Product> productsToCreate =
+        readCsvFileAsObject(new File(PRODUCT_CREATION_TEST_DATA), Product.class);
+
+    List<Integer> allProductsId =
+        restClient
             .sendRequestWithParams(Method.GET, GET_ALL_PRODUCTS.getPath(), Collections.emptyMap())
             .jsonPath()
             .getList("records.id", Integer.class);
-    List<Integer> productsToDelete = productsIfExist(productToCreate, allProductsId);
+    List<Integer> productsIdToDelete = getProductsIdToDelete(productsToCreate, allProductsId);
 
-    deleteProducts(productsToDelete);
-
-    createProducts(productToCreate);
+    deleteProducts(productsIdToDelete);
+    createProducts(productsToCreate);
   }
 
-  private static void deleteProducts(List<Integer> productsToDelete) {
-    productsToDelete.forEach(productToCreate ->
+  private static void deleteProducts(List<Integer> productsIdToDelete) {
+    productsIdToDelete.forEach(productIdToCreate ->
             restClient.sendRequestWithBody(
-                    Method.DELETE, DELETE_PRODUCT.getPath(), Map.of("id", productToCreate)));
+                    Method.DELETE, DELETE_PRODUCT.getPath(), Map.of("id", productIdToCreate)));
   }
 
-  private static List<Integer> productsIfExist(List<Product> productToCreate, List<Integer> allProductsId) {
+  private static List<Integer> getProductsIdToDelete(List<Product> productToCreate, List<Integer> allProductsId) {
     return productToCreate.stream().map(Product::getId)
             .filter(allProductsId::contains).collect(Collectors.toList());
   }
