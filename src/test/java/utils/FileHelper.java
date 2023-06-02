@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import exceptions.TestExecutionException;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,14 +16,6 @@ import java.util.List;
 public class FileHelper {
   static ObjectMapper objectMapper = new ObjectMapper();
   static CsvMapper csvMapper = new CsvMapper();
-
-  public static <T> T readJsonFileAsObject(String path, Class<T> classToCast) {
-    try {
-      return objectMapper.readValue(new File(path), classToCast);
-    } catch (IOException ioException) {
-      throw new TestExecutionException("Problem with json file: %s", ioException.getCause());
-    }
-  }
 
   public static <T> T readJsonStringAsObject(String jsonString, Class<T> classToCast) {
     try {

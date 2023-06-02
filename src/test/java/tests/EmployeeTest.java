@@ -8,7 +8,9 @@ import static utils.FileHelper.readJsonStringAsObject;
 import static utils.UpdateJsonHelper.updateFieldByPath;
 
 import configurations.BaseTest;
+
 import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 import models.Employee;
 import models.EmployeeModel;
@@ -21,7 +23,6 @@ import utils.ObjectsArgumentsProvider;
 
 @Slf4j
 public class EmployeeTest extends BaseTest {
-
   private static final int FIRST = 0;
 
   @ParameterizedTest
@@ -33,8 +34,8 @@ public class EmployeeTest extends BaseTest {
     Employee actualEmployee = readJsonStringAsObject(jsonString, EmployeeModel.class).getEmployee();
 
     assertThat("Actual Employee: " + actualEmployee,
-        actualEmployee.getName(),
-        equalTo(expectedEmployeeName));
+            actualEmployee.getName(),
+            equalTo(expectedEmployeeName));
   }
 
   @Test
@@ -52,7 +53,7 @@ public class EmployeeTest extends BaseTest {
 
   @ParameterizedTest
   @MethodSource("utils.DataUtils#provideObjectsData")
- public void updateAddressCity(String expectedAddressCity) {
+  public void updateAddressCity(String expectedAddressCity) {
     String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE.getPath());
 
     String jsonString = updateFieldByPath(pathToJsonFile, "employee.addresses[0].city", expectedAddressCity);
@@ -73,12 +74,11 @@ public class EmployeeTest extends BaseTest {
     assertThat("Actual Employee: " + actualEmployee,
             actualEmployee.getPhones()[FIRST],
             equalTo("testPhone"));
-
   }
 
   @ParameterizedTest
   @ValueSource(strings = {"SoftServe", "GlobalLogic", "Luxoft"})
- public   void updateCompanyName(String expectedCompanyName) {
+  public void updateCompanyName(String expectedCompanyName) {
     String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE.getPath());
 
     String jsonString = updateFieldByPath(pathToJsonFile, "employee.company.name", expectedCompanyName);
@@ -86,7 +86,7 @@ public class EmployeeTest extends BaseTest {
 
     assertThat("Actual Employee: " + actualEmployee,
             actualEmployee.getCompany().getName(),
-        equalTo(expectedCompanyName));
+            equalTo(expectedCompanyName));
   }
 
   @Test

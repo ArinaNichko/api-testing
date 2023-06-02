@@ -6,13 +6,16 @@ import static enums.ResourcePath.GET_ALL_PRODUCTS;
 import static utils.FileHelper.readCsvFileAsObject;
 import static utils.PropertiesHelper.getInstance;
 
+import builder.ProductBuilder;
 import clients.RestClient;
 import io.restassured.http.Method;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import models.Product;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
@@ -24,6 +27,7 @@ public class BaseTest {
   protected static PropertiesHelper propertiesHelper;
   protected static String responsesTemplatePath;
   protected static String requestsTemplatePath;
+  protected static String expectedProductsTemplatePath;
 
   @BeforeClass
   public static void beforeClassConfiguration() {
@@ -73,5 +77,6 @@ public class BaseTest {
   private static void initializeConstants() {
     responsesTemplatePath = propertiesHelper.getProperty("responsesTemplatePath");
     requestsTemplatePath = propertiesHelper.getProperty("requestsTemplatePath");
+    expectedProductsTemplatePath = propertiesHelper.getProperty("expectedProductsTemplatePath");
   }
 }
