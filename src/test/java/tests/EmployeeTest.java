@@ -1,11 +1,11 @@
 package tests;
 
-import static enums.ResourcePath.UPDATE_EMPLOYEE;
+import static enums.ResourcePath.UPDATE_EMPLOYEE_JSON;
+import static enums.ResourcePath.UPDATE_EMPLOYEE_XML;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static utils.FileHelper.readJsonFileAsString;
 import static utils.FileHelper.readJsonStringAsObject;
-import static utils.UpdateJsonHelper.updateFieldByPath;
 
 import configurations.BaseTest;
 
@@ -20,17 +20,21 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import utils.ObjectsArgumentsProvider;
+import utils.UpdateJsonHelper;
+import utils.UpdateXmlHelper;
+import utils.XMLAdapter;
 
 @Slf4j
 public class EmployeeTest extends BaseTest {
   private static final int FIRST = 0;
+  private static final UpdateJsonHelper JSON_HELPER = new UpdateJsonHelper();
 
   @ParameterizedTest
   @ArgumentsSource(ObjectsArgumentsProvider.class)
   public void updateEmployeeName(String expectedEmployeeName) {
-    String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE.getPath());
+    String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE_JSON.getPath());
 
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.name", expectedEmployeeName);
+    String jsonString = JSON_HELPER.updateFieldByPath(pathToJsonFile, "employee.name", expectedEmployeeName);
     Employee actualEmployee = readJsonStringAsObject(jsonString, EmployeeModel.class).getEmployee();
 
     assertThat("Actual Employee: " + actualEmployee,
@@ -40,10 +44,11 @@ public class EmployeeTest extends BaseTest {
 
   @Test
   public void updateAddressCity() {
-    String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE.getPath());
+    String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE_JSON.getPath());
 
     String expectedAddressCity = "Lviv";
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.addresses[0].city", expectedAddressCity);
+    String jsonString = JSON_HELPER.updateFieldByPath(
+            pathToJsonFile, "employee.addresses[0].city", expectedAddressCity);
     Employee actualEmployee = readJsonStringAsObject(jsonString, EmployeeModel.class).getEmployee();
 
     assertThat("Actual Employee: " + actualEmployee,
@@ -54,9 +59,10 @@ public class EmployeeTest extends BaseTest {
   @ParameterizedTest
   @MethodSource("utils.DataUtils#provideObjectsData")
   public void updateAddressCity(String expectedAddressCity) {
-    String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE.getPath());
+    String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE_JSON.getPath());
 
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.addresses[0].city", expectedAddressCity);
+    String jsonString = JSON_HELPER.updateFieldByPath(
+            pathToJsonFile, "employee.addresses[0].city", expectedAddressCity);
     Employee actualEmployee = readJsonStringAsObject(jsonString, EmployeeModel.class).getEmployee();
 
     assertThat("Actual Employee: " + actualEmployee,
@@ -66,9 +72,10 @@ public class EmployeeTest extends BaseTest {
 
   @Test
   public void updatePhones() {
-    String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE.getPath());
+    String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE_JSON.getPath());
 
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.phones", List.of("testPhone"));
+    String jsonString = JSON_HELPER.updateFieldByPath(
+            pathToJsonFile, "employee.phones", List.of("testPhone"));
     Employee actualEmployee = readJsonStringAsObject(jsonString, EmployeeModel.class).getEmployee();
 
     assertThat("Actual Employee: " + actualEmployee,
@@ -79,9 +86,10 @@ public class EmployeeTest extends BaseTest {
   @ParameterizedTest
   @ValueSource(strings = {"SoftServe", "GlobalLogic", "Luxoft"})
   public void updateCompanyName(String expectedCompanyName) {
-    String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE.getPath());
+    String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE_JSON.getPath());
 
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.company.name", expectedCompanyName);
+    String jsonString = JSON_HELPER.updateFieldByPath(
+            pathToJsonFile, "employee.company.name", expectedCompanyName);
     Employee actualEmployee = readJsonStringAsObject(jsonString, EmployeeModel.class).getEmployee();
 
     assertThat("Actual Employee: " + actualEmployee,
@@ -91,14 +99,31 @@ public class EmployeeTest extends BaseTest {
 
   @Test
   public void updatePhone() {
-    String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE.getPath());
+    String pathToJsonFile = readJsonFileAsString(UPDATE_EMPLOYEE_JSON.getPath());
 
     String expectedPhone = "4554";
-    String jsonString = updateFieldByPath(pathToJsonFile, "employee.phones[0]", expectedPhone);
+    String jsonString = JSON_HELPER.updateFieldByPath(
+            pathToJsonFile, "employee.phones[0]", expectedPhone);
     Employee actualEmployee = readJsonStringAsObject(jsonString, EmployeeModel.class).getEmployee();
 
     assertThat("Actual Employee: " + actualEmployee,
             actualEmployee.getPhones()[FIRST],
             equalTo(expectedPhone));
   }
+
+  @Test
+  public void updateNameWithAdapter() {
+    String expectedName = "Arina";
+    UpdateXmlHelper xmlHelper = new UpdateXmlHelper();
+    XMLAdapter adapter = new XMLAdapter(xmlHelper);
+
+    String jsonString = adapter.updateFieldByPath(
+            UPDATE_EMPLOYEE_XML.getPath(), "employee.name", expectedName, EmployeeModel.class);
+    Employee actualEmployee = readJsonStringAsObject(jsonString, EmployeeModel.class).getEmployee();
+
+    assertThat("Actual Employee: " + actualEmployee,
+            actualEmployee.getName(),
+            equalTo(expectedName));
+  }
 }
+

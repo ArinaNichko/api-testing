@@ -1,0 +1,24 @@
+<root>
+    <employee>
+        <name>Ivan</name>
+        <position>automation QA</position>
+        <phones>
+            <phone>1234</phone>
+            <phone>5678</phone>
+        </phones>
+        <addresses>
+            <address>
+                <city>Zagreb</city>
+                <country>Croatia</country>
+            </address>
+            <address>
+                <city>Kyiv</city>
+                <country>Ukraine</country>
+            </address>
+        </addresses>
+        <company>
+            <name>Epam</name>
+            <id>00001</id>
+        </company>
+    </employee>
+</root>
