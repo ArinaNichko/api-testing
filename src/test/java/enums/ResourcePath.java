@@ -6,8 +6,8 @@ public enum ResourcePath {
   UPDATE_PRODUCT("/update.php"),
   DELETE_PRODUCT("/delete.php"),
   CREATE_PRODUCT("/create.php"),
-  UPDATE_EMPLOYEE_JSON("src/test/resources/employeeJson/employee.json"),
-  UPDATE_EMPLOYEE_XML("src/test/resources/employeeJson/employee.xml");
+  UPDATE_EMPLOYEE_JSON("src/test/resources/employee/employee.json"),
+  UPDATE_EMPLOYEE_XML("src/test/resources/employee/employee.xml");
   private final String path;
 
   ResourcePath(String path) {
