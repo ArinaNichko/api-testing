@@ -1,12 +1,12 @@
 package utils;
 
-import static com.fasterxml.jackson.dataformat.csv.CsvSchema.emptySchema;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import exceptions.TestExecutionException;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,14 +16,6 @@ import java.util.List;
 public class FileHelper {
   static ObjectMapper objectMapper = new ObjectMapper();
   static CsvMapper csvMapper = new CsvMapper();
-
-  public static <T> T readJsonFileAsObject(String path, Class<T> classToCast) {
-    try {
-      return objectMapper.readValue(new File(path), classToCast);
-    } catch (IOException ioException) {
-      throw new TestExecutionException("Problem with json file: %s", ioException.getCause());
-    }
-  }
 
   public static <T> T readJsonStringAsObject(String jsonString, Class<T> classToCast) {
     try {
@@ -42,14 +34,13 @@ public class FileHelper {
   }
 
   public static <T> List<T> readCsvFileAsObject(File file, Class<T> classToCast) {
-    try (MappingIterator<T> mappingIterator =
-        csvMapper.readerFor(classToCast).with(emptySchema().withHeader()).readValues(file)) {
-      if (mappingIterator.hasNext()) {
-        return mappingIterator.readAll();
-      } else {
-        throw new TestExecutionException(
-            "The '%s' CSV file is empty or incorrect!", file.getName());
-      }
+    CsvSchema classSchema = csvMapper.schemaFor(classToCast).withHeader();
+    try {
+      MappingIterator<T> it = csvMapper
+              .readerFor(classToCast)
+              .with(classSchema)
+              .readValues(file);
+      return it.readAll();
     } catch (IOException e) {
       throw new TestExecutionException(e.getMessage());
     }

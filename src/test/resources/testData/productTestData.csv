@@ -1,4 +1,4 @@
 id,getProductResponse
-10,/products/get-response-id-10.json
-12,/products/get-response-id-12.json
-15,/products/get-response-id-15.json
+10,/json/get-response-id-10.json
+12,/json/get-response-id-12.json
+15,/json/get-response-id-15.json
